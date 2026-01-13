@@ -27,7 +27,7 @@ class OwnerProfileTransformer extends Transformer
      * @var array
      */
     protected array $availableIncludes = [
-        'metaRequest'
+        'metaRequest', 'metaRequests'
     ];
 
     /**
@@ -186,6 +186,35 @@ class OwnerProfileTransformer extends Transformer
         // Return null if no matching records are found
         return $this->null();
     }
+     public function includeMetaRequests(Owner $user)
+    {
+        $driver_ids = Driver::where("owner_id", $user->id)->pluck("id")->toArray();
+        $request_meta_list = RequestMeta::with('request')->whereIn('driver_id', $driver_ids)->where('active', true)
+        ->whereHas('request', function ($query) {
+            $query->where('is_driver_started', 0)
+                ->where('is_driver_arrived', 0)
+                ->where('is_trip_start', 0)
+                ->where('is_completed', 0)
+                ->where('is_cancelled', 0)
+                ->where('is_paid', 0)
+                ->where('user_rated', 0)
+                ->where('driver_rated', 0);
+        })
+        ->orderBy("created_at", "desc")
+        ->get();
 
+        if ($request_meta_list->isNotEmpty()) {
+            // Extract all associated `request` data
+            $requests = $request_meta_list->map(function ($request_meta) {
+                return $request_meta->request; // Assuming `request` is a relationship
+            })->filter(); // Remove null values if any `RequestMeta` doesn't have a request
+
+            // Transform and return all valid requests as a collection
+            return $this->collection($requests, new TripRequestTransformer());
+        }
+
+        // Return null if no matching records are found
+        return $this->null();
+    }
    
 }

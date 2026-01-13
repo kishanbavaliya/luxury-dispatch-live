@@ -473,6 +473,10 @@ if ($request->has('mobile') && $request->has('email')) {
             'refferal_code'=>str_random(6),
         ];
 
+        if($request->has('password')){
+            $data['password']= Hash::make($request->password);
+        }
+
         DB::beginTransaction();
         try {
 

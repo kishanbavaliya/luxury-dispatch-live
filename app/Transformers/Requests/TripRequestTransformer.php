@@ -152,6 +152,9 @@ class TripRequestTransformer extends Transformer
             'status' => $request->status,
             'bill_pdf' => $request->bill_pdf ? asset($request->bill_pdf) : "",
         ];
+        if($request->driverDetail && $request->driverDetail->fleet_id){
+            $params['car_number'] = $request->driverDetail->fleetDetail->license_number;
+        }
         if(!$request->if_dispatch){
             $params['show_otp_feature'] = true;
         }else{
@@ -275,6 +278,9 @@ class TripRequestTransformer extends Transformer
         }elseif($request->payment_opt ==PaymentType::CASH){
 
             $params['payment_type_string'] = 'cash';
+        }elseif($request->payment_opt ==PaymentType::ONLINE){
+
+            $params['payment_type_string'] = 'online';
         }else{
 
             $params['payment_type_string'] = 'wallet';

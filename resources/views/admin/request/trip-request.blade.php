@@ -152,7 +152,7 @@ $value=web_map_settings();
                                                                                                 </p> -->
                                                 <p class="mb-1 f-12">
 
-                                                     @lang('view_pages.payment_type') : <b>{{ $item->payment_opt == 1 ? 'Cash' : 'Card' }}</b>
+                                                     @lang('view_pages.payment_type') : <b>{{ $item->payment_opt == 1 ? 'Cash' : ($item->payment_opt == 4 ? 'Online' : 'Card') }}</b>
                                                 </p>
                                                 <p class="mb-1 f-12">
                                                     @lang('view_pages.amount') :
@@ -799,7 +799,7 @@ $value=web_map_settings();
                                                                                                 </p> -->
                                                 <p class="mb-1 f-12">
 
-                                                     @lang('view_pages.payment_type') : <b>{{ $item->payment_opt == 1 ? 'Cash' : 'Card' }}</b>
+                                                     @lang('view_pages.payment_type') : <b>{{ $item->payment_opt == 1 ? 'Cash' : ($item->payment_opt == 4 ? 'Online' : 'Card') }}</b>
                                                 </p>
                                                 @php
                                                     $Commission = $item->request_eta_amount - ($item->request_eta_amount - (($item->request_eta_amount / 100) * $item->comission_percentage));

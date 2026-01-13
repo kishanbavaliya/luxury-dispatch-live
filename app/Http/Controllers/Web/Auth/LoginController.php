@@ -303,7 +303,8 @@ class LoginController extends ApiController
 
         //     $this->throwAccountDisabledException($identifier);
         // }
-       
+       $user->active_role = $role;
+       $user->save();
         return $this->authenticateAndRespond($user, $request, $needsToken);
     }
 

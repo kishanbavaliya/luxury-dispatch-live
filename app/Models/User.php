@@ -58,7 +58,7 @@ class User extends Authenticatable implements CanSendOTPContract
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'username', 'email', 'password', 'mobile', 'country', 'profile_picture', 'email_confirmed', 'mobile_confirmed', 'email_confirmation_token', 'active','fcm_token','login_by','apn_token','timezone','rating','rating_total','no_of_ratings','refferal_code','referred_by','social_nickname','social_id','social_token','social_token_secret','social_refresh_token','social_expires_in','social_avatar','social_avatar_original','social_provider','company_key','lang','is_bid_app','authorization_code','is_deleted_at','gender'
+        'name', 'surname', 'username', 'email', 'password', 'mobile', 'country', 'profile_picture', 'email_confirmed', 'mobile_confirmed', 'email_confirmation_token', 'active','fcm_token','login_by','apn_token','timezone','rating','rating_total','no_of_ratings','refferal_code','referred_by','social_nickname','social_id','social_token','social_token_secret','social_refresh_token','social_expires_in','social_avatar','social_avatar_original','social_provider','company_key','lang','is_bid_app','authorization_code','is_deleted_at','gender' , 'active_role'
     ];
 
     /**
@@ -356,5 +356,15 @@ class User extends Authenticatable implements CanSendOTPContract
         return $this->hasOne(Owner::class, 'user_id', 'id');
     }
 
+    // public function hasRole($roles, $guard = null): bool
+    // {
+    //     // ✅ Custom logic first
+    //     if ($this->active_role) {
+    //         return $this->active_role === $roles;
+    //     }
+
+    //     // 🔁 Fallback to Spatie default behavior
+    //     return $this->spatieHasRole($roles, $guard);
+    // }
 
 }

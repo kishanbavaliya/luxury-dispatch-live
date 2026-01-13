@@ -39,7 +39,7 @@ class AccountController extends ApiController
 
             $owner_details = $user->owner;
 
-            $user = fractal($owner_details, new OwnerProfileTransformer)->parseIncludes(['onTripRequest.userDetail','onTripRequest.requestBill','metaRequest.userDetail','driverVehicleType']);
+            $user = fractal($owner_details, new OwnerProfileTransformer)->parseIncludes(['onTripRequest.userDetail','onTripRequest.requestBill','metaRequest.userDetail','driverVehicleType', 'metaRequests.userDetail']);
         }
 
         if(auth()->user()->hasRole(Role::DISPATCHER)){

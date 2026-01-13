@@ -102,9 +102,9 @@ class FleetDriversController extends BaseController
 
         DB::beginTransaction();
         try {
-        if($request->is_owner == 1){
-            $user = User::where("email", $request->owner_email)->first();
-        } else {
+        // if($request->is_owner == 1){
+        //     $user = User::where("email", $request->owner_email)->first();
+        // } else {
             $user = User::create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
@@ -120,7 +120,7 @@ class FleetDriversController extends BaseController
                 $user->password = Hash::make($request->password);
                 $user->save();
             }
-        }
+        // }
 
         $user->attachRole(Role::DRIVER);
 

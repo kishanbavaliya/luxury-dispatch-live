@@ -8,4 +8,5 @@ class PaymentType
     const CASH = 1;
     const WALLET = 2;
     const WALLET_AND_CASH = 3;
+    const ONLINE = 4;
 }

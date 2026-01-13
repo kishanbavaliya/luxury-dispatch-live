@@ -342,7 +342,7 @@ trait FetchDriversFromFirebaseHelpers
                 // })->pluck('driver_id')->toArray();
 
                 if($only_luxury_limoexpress == 1){
-                    $nearest_drivers = Driver::where('owner_id', $Owner->id)->where('vehicle_type', $request_detail->vehicle_type_id)->get();
+                    $nearest_drivers = Driver::where('owner_id', $Owner->id)->get();
                 } else {
                     if($only_luxury_limoexpress == 2){
                         // $nearest_drivers = Driver::where('available', 1)->where('approve', 1)->whereIn('id', $nearest_driver_ids)->whereNotIn('id', $meta_drivers)->where("owner_id", "!=", luxury_limoexpress_owner_id())->orderByRaw(DB::raw("FIELD(id, " . implode(',', $nearest_driver_ids) . ")"))->get();
@@ -354,11 +354,10 @@ trait FetchDriversFromFirebaseHelpers
                             $query->where('owner_id', '!=', luxury_limoexpress_owner_id())
                                 ->orWhereNull('owner_id');
                         })
-                        ->where('vehicle_type', $request_detail->vehicle_type_id)
                         ->get();
                     } else {
                         // $nearest_drivers = Driver::where('available', 1)->where('approve', 1)->whereIn('id', $nearest_driver_ids)->whereNotIn('id', $meta_drivers)->orderByRaw(DB::raw("FIELD(id, " . implode(',', $nearest_driver_ids) . ")"))->limit(10)->get();
-                        $nearest_drivers = Driver::where('available', 1)->where('approve', 1)->where('vehicle_type', $request_detail->vehicle_type_id)->get();
+                        $nearest_drivers = Driver::where('available', 1)->where('approve', 1)->get();
                     }
                 }
 

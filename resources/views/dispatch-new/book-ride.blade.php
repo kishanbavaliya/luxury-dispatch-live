@@ -493,6 +493,15 @@ var default_country = "{{get_settings('default_country_code_for_mobile_app')}}";
             <input id="comission_percentage" type="number" class="form-control" placeholder="Comission Percentage" min="0">
         </div>
       </div>
+       <div class="col-lg-6">
+        <div class="textOnInput mt-10 mt-lg-5">
+            <label for="payment_type" class="form-label">Payment Type</label>
+            <select id="payment_type" class="form-control" required>
+                <option value="1">Cash</option>
+                <option value="4">Online</option>
+            </select>
+        </div>
+      </div>
       
       <div class="col-lg-14">
         <div class="owner-toggle mb-2" role="tablist" aria-label="Owner include options">

@@ -81,7 +81,7 @@ class DispatcherCreateRequestController extends BaseController
             'drop_lat' => 'exclude_if:booking_type,book-hourly|sometimes|required',
             'drop_lng' => 'exclude_if:booking_type,book-hourly|sometimes|required',
             'vehicle_type'=>'sometimes|required|exists:zone_types,id',
-            'payment_opt'=>'sometimes|required|in:0,1,2',
+            'payment_opt'=>'sometimes|required|in:0,1,2,4',
             'pick_address'=>'required',
             'drop_address'=>'exclude_if:booking_type,book-hourly|sometimes|required',
             'drivers'=>'sometimes|required',
@@ -172,7 +172,7 @@ class DispatcherCreateRequestController extends BaseController
             'request_number'=>$request_number,
             'zone_type_id'=>$request->vehicle_type,
             'if_dispatch'=>true,
-            'dispatcher_id'=>$user_detail->admin->id,
+            'dispatcher_id'=>$user_detail->admin->id ?? null,
             'payment_opt'=>$request->payment_opt,
             'unit'=>$unit,
             'transport_type'=>$request->transport_type,
@@ -582,7 +582,7 @@ class DispatcherCreateRequestController extends BaseController
             'zone_type_id'=>$request->vehicle_type,
             'trip_start_time'=>$trip_start_time,
             'if_dispatch'=>true,
-            'dispatcher_id'=>$user_detail->admin->id,
+            'dispatcher_id'=>$user_detail->admin->id ?? null,
             'payment_opt'=>$request->payment_opt,
             'unit'=>$unit,
             'requested_currency_code'=>$currency_code,
@@ -961,12 +961,13 @@ class DispatcherCreateRequestController extends BaseController
             $calculated_bill['waiting_charge_per_min'] = $zone_type_price->waiting_charge ?? 0;
             $calculated_bill['requested_currency_code'] = $service_location->currency_code;
             $calculated_bill['requested_currency_symbol'] = $service_location->currency_symbol;
-
+            $completed_at = $request_detail->trip_start_time;
             // Update request as completed
             $request_detail->update([
                 'driver_id' => $driver->id,
                 'is_completed' => true,
-                'completed_at' => date('Y-m-d H:i:s'),
+                // 'completed_at' => date('Y-m-d H:i:s'),
+                'completed_at' => $completed_at,
                 'total_distance' => $distance,
                 'total_time' => $duration,
             ]);

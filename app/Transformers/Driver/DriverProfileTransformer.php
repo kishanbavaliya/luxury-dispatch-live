@@ -55,7 +55,7 @@ class DriverProfileTransformer extends Transformer
         $authorization_code = auth()->user()->authorization_code;
         $app_for = config('app.app_for');
         $country_dial_code =$user->countryDetail?$user->countryDetail->dial_code:'';
-Log::info('from driver - '.$user->id);
+// Log::info('from driver - '.$user->id);
 
         $params = [
             'id' => $user->id,
