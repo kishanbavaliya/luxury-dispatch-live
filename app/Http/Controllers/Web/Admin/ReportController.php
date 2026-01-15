@@ -162,7 +162,7 @@ class ReportController extends Controller
         }); // Ensure numeric keys for pagination
 
         // Get all owners for dropdown (needed for PDF rendering and the view)
-        $owners = Owner::select('id', 'owner_name')->orderBy('owner_name')->get();
+        $owners = Owner::select('id', 'owner_name', 'company_name')->orderBy('owner_name')->get();
 
         // If there are any rides and the user requested to send email only, generate PDF and email it
         if ($partnerData->count() > 0 && $request->filled('send_email')) {
@@ -290,19 +290,26 @@ class ReportController extends Controller
         $sub_menu = 'commission_overview';
 
         $filter = $request->filter ?? 'daily';
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
 
-        switch ($filter) {
-            case 'weekly':
-                $from = Carbon::now()->startOfWeek();
-                break;
-            case 'monthly':
-                $from = Carbon::now()->startOfMonth();
-                break;
-            case 'yearly':
-                $from = Carbon::now()->startOfYear();
-                break;
-            default:
-                $from = Carbon::today();
+        if ($filter === 'custom' && $from_date && $to_date) {
+            $from = Carbon::parse($from_date)->startOfDay();
+            $to = Carbon::parse($to_date)->endOfDay();
+        } else {
+            switch ($filter) {
+                case 'weekly':
+                    $from = Carbon::now()->startOfWeek();
+                    break;
+                case 'monthly':
+                    $from = Carbon::now()->startOfMonth();
+                    break;
+                case 'yearly':
+                    $from = Carbon::now()->startOfYear();
+                    break;
+                default:
+                    $from = Carbon::today();
+            }
         }
 
         $to = Carbon::now()->endOfDay();
@@ -327,13 +334,13 @@ class ReportController extends Controller
             ->map(function ($item) {
                 $owner = DB::table('owners')->where('id', $item->user_id)->first();
                 return [
-                    'partner_name' => $owner->name ?? 'Unknown',
+                    'partner_name' => $owner->company_name ?? 'Unknown',
                     'commission' => $item->commission,
                 ];
             });
 
         return view('admin.reports.commission_report', compact(
-            'page', 'main_menu', 'sub_menu', 'commissions', 'totalCommission', 'partnerCommissions', 'filter'
+            'page', 'main_menu', 'sub_menu', 'commissions', 'totalCommission', 'partnerCommissions', 'filter', 'from_date', 'to_date'
         ));
     }
 

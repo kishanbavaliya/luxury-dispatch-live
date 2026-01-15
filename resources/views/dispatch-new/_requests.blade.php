@@ -12,6 +12,7 @@
     <thead>
       <tr>
         <th scope="col">Request No</th>
+        <th scope="col">Driver</th>
         <th scope="col">Date</th>
         <th scope="col">Pickup Location</th>
         <th scope="col">Drop Location</th>
@@ -20,9 +21,10 @@
       </tr>
     </thead>
     <tbody>
-    @forelse ($results as $key => $result)
-    <tr>
+      @forelse ($results as $key => $result)
+      <tr>
         <th scope="row">{{ $result->request_number }}</th>
+        <td>{{ $result->driverDetail ? $result->driverDetail->name : '-' }}</td>
         <td>{{ $result->is_later ? $result->converted_trip_start_time : $result->converted_created_at }}</td>
         <td>{{ $result->pickaddress }}</td>
         <td>{{ $result->dropaddress }}</td>
@@ -52,7 +54,7 @@
         </td>
       </tr>
     @empty
-    <tr><td colspan="12" style = "display: flex; text-align: center; justify-content:center;">No Requests Yet</td></tr>
+    <tr><td colspan="7" style = "display: flex; text-align: center; justify-content:center;">No Requests Yet</td></tr>
     @endforelse
     </tbody>
 </table>

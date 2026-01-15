@@ -13,12 +13,20 @@
 
                     <form method="get" action="{{ route('commissionReport') }}" class="form-inline float-right">
                         <label for="filter" class="mr-2">Filter:</label>
-                        <select name="filter" class="form-control mr-2" onchange="this.form.submit()">
+                        <select name="filter" class="form-control mr-2" onchange="toggleDateInputs()">
                             <option value="daily" {{ $filter == 'daily' ? 'selected' : '' }}>Daily</option>
                             <option value="weekly" {{ $filter == 'weekly' ? 'selected' : '' }}>Weekly</option>
                             <option value="monthly" {{ $filter == 'monthly' ? 'selected' : '' }}>Monthly</option>
                             <option value="yearly" {{ $filter == 'yearly' ? 'selected' : '' }}>Yearly</option>
+                            <option value="custom" {{ $filter == 'custom' ? 'selected' : '' }}>Custom</option>
                         </select>
+                        <div id="dateInputs" class="" style="display: {{ $filter == 'custom' ? 'inline' : 'none' }};">
+                            <label for="from_date" class="mr-1">From:</label>
+                            <input type="date" name="from_date" class="form-control mr-2" value="{{ $from_date ?? '' }}">
+                            <label for="to_date" class="mr-1">To:</label>
+                            <input type="date" name="to_date" class="form-control mr-2" value="{{ $to_date ?? '' }}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Filter</button>
                     </form>
                 </div>
 
@@ -33,7 +41,7 @@
 
                         <div class="col-md-8">
                             <div class="alert alert-secondary">
-                                <strong>Commission per Partner:</strong>
+                                <strong>Commission per Company:</strong>
                                 <ul class="mb-0">
                                     @forelse ($partnerCommissions as $partner)
                                         <li>{{ $partner['partner_name'] }}: ${{ number_format($partner['commission'], 2) }}</li>
@@ -49,7 +57,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Partner Name</th>
+                                <th>Company Name</th>
                                 <th>Commission Amount</th>
                                 <th>Date</th>
                             </tr>
@@ -62,7 +70,7 @@
                                         {{
                                             DB::table('owners')
                                                 ->where('id', $commission->user_id)
-                                                ->value('name') ?? 'Unknown'
+                                                ->value('company_name') ?? 'Unknown'
                                         }}
                                     </td>
                                     <td>${{ number_format($commission->amount, 2) }}</td>
@@ -74,7 +82,7 @@
                         </tbody>
                     </table>
 
-                    {{ $commissions->appends(['filter' => $filter])->links() }}
+                    {{ $commissions->appends(request()->query())->links() }}
                 </div>
 
             </div>
@@ -82,3 +90,22 @@
     </div>
 </div>
 @endsection
+
+<script>
+function toggleDateInputs() {
+    var filter = document.querySelector('select[name="filter"]').value;
+    var dateInputs = document.getElementById('dateInputs');
+    var fromDate = document.querySelector('input[name="from_date"]');
+    var toDate = document.querySelector('input[name="to_date"]');
+
+    if (filter === 'custom') {
+        dateInputs.style.display = 'inline';
+    } else {
+        dateInputs.style.display = 'none';
+
+        // Clear dates when not custom
+        if (fromDate) fromDate.value = '';
+        if (toDate) toDate.value = '';
+    }
+}
+</script>

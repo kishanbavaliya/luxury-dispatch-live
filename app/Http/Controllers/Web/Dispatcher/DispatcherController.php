@@ -161,16 +161,16 @@ class DispatcherController extends BaseController
         $type = $request->type;
         switch ($type) {
             case 'completed':
-                $query = RequestRequest::where('is_completed',1);
+                $query = RequestRequest::with('driverDetail')->where('is_completed',1);
                 break;
             case 'cancelled':
-                $query = RequestRequest::where('is_cancelled',1);
+                $query = RequestRequest::with('driverDetail')->where('is_cancelled',1);
                 break;
             case 'upcoming':
-                $query = RequestRequest::where('is_completed',0)->Where('is_cancelled',0)->where('is_driver_started',0)->where('is_later',1);
+                $query = RequestRequest::with('driverDetail')->where('is_completed',0)->Where('is_cancelled',0)->where('is_driver_started',0)->where('is_later',1);
                 break;
             default:
-                $query = RequestRequest::where('is_completed',1)->orWhere('is_cancelled',1)->orWhere(function($query){
+                $query = RequestRequest::with('driverDetail')->where('is_completed',1)->orWhere('is_cancelled',1)->orWhere(function($query){
                     $query->where('is_completed',0)->Where('is_cancelled',0)->where('is_driver_started',0)->where('is_later',1);
                 });
                 break;

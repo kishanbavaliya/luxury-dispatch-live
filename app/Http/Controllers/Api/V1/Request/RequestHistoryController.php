@@ -73,7 +73,10 @@ class RequestHistoryController extends BaseController
 
             $includes = ['driverDetail','requestBill'];
         }
+        if(request()->has('is_later') && request()->is_later == 1){
 
+            $query = $query->orderBy('trip_start_time', 'desc');
+        }
         // echo $query->get();exit;
         $result  = filter($query, new TripRequestTransformer, new RequestFilter, 'history')->customIncludes($includes)->paginate();
 

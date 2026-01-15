@@ -25,7 +25,7 @@
                                     <option value="">All Owners</option>
                                     @forelse($owners as $owner)
                                         <option value="{{ $owner->id }}" {{ $owner_id == $owner->id ? 'selected' : '' }}>
-                                            {{ $owner->owner_name }}
+                                            {{ $owner->company_name }}
                                         </option>
                                     @empty
                                         <option disabled>No owners available</option>

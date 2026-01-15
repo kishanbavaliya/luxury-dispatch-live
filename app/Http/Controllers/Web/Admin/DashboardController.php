@@ -111,7 +111,7 @@ class DashboardController extends BaseController
         }
 
 
-        $cardEarningsQuery = "IFNULL(SUM(IF(requests.payment_opt=0,request_bills.total_amount,0)),0)";
+        $cardEarningsQuery = "IFNULL(SUM(IF(requests.payment_opt IN (0,4), request_bills.total_amount, 0)), 0)";
         $cashEarningsQuery = "IFNULL(SUM(IF(requests.payment_opt=1,request_bills.total_amount,0)),0)";
         $walletEarningsQuery = "IFNULL(SUM(IF(requests.payment_opt=2,request_bills.total_amount,0)),0)";
         $adminCommissionQuery = "IFNULL(SUM(request_bills.admin_commision_with_tax),0)";
