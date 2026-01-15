@@ -85,8 +85,9 @@ class DriverEndRequestController extends BaseController
         }
 
         $firebase_request_detail = $this->database->getReference('requests/'.$request_detail->id)->getValue();
-
-        $request_place_params = ['drop_lat'=>$request->drop_lat,'drop_lng'=>$request->drop_lng,'drop_address'=>$request->drop_address];
+        $requestPlace = $request_detail->requestPlace;
+        // $request_place_params = ['drop_lat'=>$request->drop_lat,'drop_lng'=>$request->drop_lng,'drop_address'=>$request->drop_address];
+        $request_place_params = ['drop_lat'=>$requestPlace->drop_lat,'drop_lng'=>$requestPlace->drop_lng,'drop_address'=>$requestPlace->drop_address];
 
         if ($firebase_request_detail) {
             if(array_key_exists('lat_lng_array',$firebase_request_detail)){
@@ -254,7 +255,7 @@ class DriverEndRequestController extends BaseController
 
             // Deduct the admin commission + tax from driver walllet
             $admin_commision_with_tax = $calculated_bill['admin_commision_with_tax'];
-            if($request_detail->driverDetail->owner()->exists()){
+            if($request_detail->driverDetail->owner()->exists() && $request_detail->driverDetail->owner->ownerWalletDetail){
 
             $owner_wallet = $request_detail->driverDetail->owner->ownerWalletDetail;
             $owner_wallet->amount_spent += $admin_commision_with_tax;

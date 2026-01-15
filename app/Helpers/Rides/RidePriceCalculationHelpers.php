@@ -250,15 +250,15 @@ trait RidePriceCalculationHelpers
             $tax_amount = ceil($tax_amount);
         }
         // Get Admin Commision
-        // $admin_commision_type = get_settings('admin_commission_type');
-        // $admin_commission_type_for_driver = get_settings('admin_commission_type_for_driver');
+        $admin_commision_type = get_settings('admin_commission_type');
+        $admin_commission_type_for_driver = get_settings('admin_commission_type_for_driver');
         
-        $admin_commision_type = 0;
-        $admin_commission_type_for_driver = 0;
+        // $admin_commision_type = 0;
+        // $admin_commission_type_for_driver = 0;
 
         // Convenience fee for customer
-        // $service_fee = get_settings('admin_commission');
-        $service_fee = 0;
+        $service_fee = get_settings('admin_commission');
+        // $service_fee = 0;
 
 
         // These lines for ETA response
@@ -289,18 +289,18 @@ trait RidePriceCalculationHelpers
 
         if($driver && $driver->owner_id != NULL){
 
-            // $admin_commission_type_for_driver = get_settings('admin_commission_type_for_owner');
-            // $service_fee_for_driver = get_settings('admin_commission_for_owner');
+            $admin_commission_type_for_driver = get_settings('admin_commission_type_for_owner');
+            $service_fee_for_driver = get_settings('admin_commission_for_owner');
             
-            $admin_commission_type_for_driver = 0;
-            $service_fee_for_driver = 0;
+            // $admin_commission_type_for_driver = 0;
+            // $service_fee_for_driver = 0;
                 }
             else {
-            // $admin_commission_type_for_driver = get_settings('admin_commission_type_for_driver');
-            // $service_fee_for_driver = get_settings('admin_commission_for_driver');
+            $admin_commission_type_for_driver = get_settings('admin_commission_type_for_driver');
+            $service_fee_for_driver = get_settings('admin_commission_for_driver');
 
-            $admin_commission_type_for_driver = 0;
-            $service_fee_for_driver = 0;
+            // $admin_commission_type_for_driver = 0;
+            // $service_fee_for_driver = 0;
 
         }
 
@@ -361,7 +361,8 @@ trait RidePriceCalculationHelpers
         $driver_commision -= $admin_commision_from_driver;
 
         // Total Amount
-        $total_amount = $sub_total + $admin_commision_with_tax;
+        // $total_amount = $sub_total + $admin_commision_with_tax;
+        $total_amount = $sub_total;
 
         if($is_round==0){
             $total_amount = round($total_amount,2);
@@ -373,8 +374,8 @@ trait RidePriceCalculationHelpers
         $dropoff_duration = $duration;
         $wait_duration = 0;
         $duration = $pickup_duration + $dropoff_duration + $wait_duration;
-// Log::info('bill_detail');
-// Log::info($discounted_total_price ?? $total_amount);
+        // Log::info('bill_detail');
+        // Log::info($discounted_total_price ?? $total_amount);
 
 
         if($request_detail){

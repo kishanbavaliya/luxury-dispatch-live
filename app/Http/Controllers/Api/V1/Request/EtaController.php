@@ -169,6 +169,23 @@ class EtaController extends ApiController
             }
         }
 
+        // ---- VEHICLE TYPE CUSTOM ORDER (NO DB CHANGE) ----
+        if ($type instanceof \Illuminate\Support\Collection) {
+
+            $order = [
+                'Standard Class Sedan'        => 1,
+                'Business Class Limousine'    => 2,
+                'First Class Limousine'       => 3,
+                'Standard Class Van'          => 4,
+                'Business Class Van'          => 5,
+            ];
+
+            $type = $type->sortBy(function ($item) use ($order) {
+                // mostly name vehicleType table ma hoy chhe
+                $name = $item->vehicleType->name ?? $item->name ?? '';
+                return $order[$name] ?? 999;
+            })->values();
+        }
 
         $result = fractal($type, new EtaTransformer);
 

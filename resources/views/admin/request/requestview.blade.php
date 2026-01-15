@@ -296,13 +296,18 @@ $value=web_map_settings();
                             @php
                             $requestBill = collect($item->requestBill->toArray());
                             $bill =
-                            $requestBill->only(['base_price','distance_price','time_price','waiting_charge','cancellation_fee','service_tax','promo_discount','total_amount','admin_commision','driver_commision','admin_commision_from_driver']);
+                            $requestBill->only(['base_price','distance_price','time_price','waiting_charge','cancellation_fee','service_tax','promo_discount','total_amount','admin_commision','admin_commision_from_driver']);
                             $bill->all();
 
                             $bill = $bill->toArray();
                             @endphp
 
                             <tbody>
+                                <tr class="">
+                                    <td>Manual Booking Comission Percentage</td>
+                                    <td>{{ $item->comission_percentage ?? "-" }}%</td>
+                                    <td>{{ ($item->request_eta_amount / 100) * $item->comission_percentage }}</td>
+                                </tr>
                                 @foreach ($bill as $key => $value)
                                 <tr class="{{ $key == 'total_amount' ? 'highlight' : '' }}">
                                     <td>{{ __('view_pages.'.$key) }}</td>
@@ -321,7 +326,13 @@ $value=web_map_settings();
                                         @endif
                                     </td>
 
-                                    <td>{{ $value }}</td>
+                                    <td>
+                                    @if ($key == 'distance_price')
+                                        {{ $bill['base_price'] }}
+                                    @else
+                                        {{ $value }}
+                                    @endif
+                                </td>
                                 </tr>
 
                                 @endforeach
@@ -334,19 +345,30 @@ $value=web_map_settings();
                             @php
                             $requestBill = collect($item->requestBill->toArray());
                             $bill =
-                            $requestBill->only(['service_tax','total_amount','admin_commision','admin_commision_from_driver','driver_commision']);
+                            $requestBill->only(['service_tax','total_amount','admin_commision','admin_commision_from_driver']);
                             $bill->all();
 
                             $bill = $bill->toArray();
                             @endphp
 
                             <tbody>
+                                <tr class="">
+                                    <td>Manual Booking Comission Percentage</td>
+                                    <td>{{ $item->comission_percentage ?? "-" }}%</td>
+                                    <td>{{ ($item->request_eta_amount / 100) * $item->comission_percentage }}</td>
+                                </tr>
                                 @foreach ($bill as $key => $value)
                                 <tr class="{{ $key == 'total_amount' ? 'highlight' : '' }}">
                                     <td>{{ __('view_pages.'.$key) }}</td>
 
 
-                                    <td>{{ $value }}</td>
+                                    <td>
+                                    @if ($key == 'distance_price')
+                                        {{ $bill['base_price'] }}
+                                    @else
+                                        {{ $value }}
+                                    @endif
+                                </td>
                                 </tr>
                                 @endforeach
 
