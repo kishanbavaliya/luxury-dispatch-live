@@ -9,7 +9,7 @@ return array (
   'amount_credited_to_your_wallet_title' => 'Amount Added Succesfully',
   'amount_credited_to_your_wallet_body' => 'Amount Credited to Your Wallet Succesfully',
   'new_request_title' => 'New Trip Requested 😊️',
-  'new_request_body' => 'New Trip Requested, you can accept or Reject the request',
+  'new_request_body' => 'New Trip Requested, you can accept the request',
   'update_request_title' => 'Update to Your Ride Booking',
   'update_request_body' => 'Update to Your Ride Booking, you can accept or Reject the request',
   'fleet_driver_approved' => 'Driver Approved',

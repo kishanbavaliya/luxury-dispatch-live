@@ -10,7 +10,7 @@ use App\Transformers\User\UserTransformer;
 use App\Transformers\Driver\DriverProfileTransformer;
 use App\Transformers\Owner\OwnerProfileTransformer;
 use App\Models\Chat;
-
+use Illuminate\Support\Facades\Log;
 
 class AccountController extends ApiController
 {

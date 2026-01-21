@@ -310,9 +310,9 @@ class ReportController extends Controller
                 default:
                     $from = Carbon::today();
             }
+            $to = Carbon::now()->endOfDay();
         }
 
-        $to = Carbon::now()->endOfDay();
 
         // Fetch commission entries
         $commissionQuery = DB::table('owner_wallet_histories')

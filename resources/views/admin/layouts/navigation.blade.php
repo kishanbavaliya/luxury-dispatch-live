@@ -20,7 +20,84 @@ if(str_contains((string)request()->path(),'translations')){
         </a>
       </li>
       @endif
+      @if(auth()->user()->can('reports'))
+      <li class="treeview {{ 'reports' == $main_menu ? 'active menu-open' : '' }}">
+        <a href="javascript: void(0);">
+          <i class="fa fa-file-pdf-o"></i>
+          <span> @lang('pages_names.reports') </span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-right pull-right"></i>
+          </span>
+        </a>
 
+        <ul class="treeview-menu">
+          @if(auth()->user()->can('user-report'))
+          <li class="{{ 'user_report' == $sub_menu ? 'active' : '' }}">
+            <a href="{{url('/reports/user')}}"><i class="fa fa-circle-thin"></i>@lang('pages_names.user_report')</a>
+          </li>
+          @endif
+
+          @if(auth()->user()->can('driver-report'))
+          <li class="{{ 'driver_report' == $sub_menu ? 'active' : '' }}">
+            <a href="{{url('/reports/driver')}}"><i class="fa fa-circle-thin"></i>@lang('pages_names.driver_report')</a>
+          </li>
+          @endif
+          @if(auth()->user()->can('driver-duties-report'))
+         <!--  <li class="{{ 'driver_duties_report' == $sub_menu ? 'active' : '' }}">
+            <a href="{{url('/reports/driver-duties')}}"><i class="fa fa-circle-thin"></i>@lang('pages_names.driver_duties_report')</a>
+          </li> -->
+          @endif
+
+          @if(auth()->user()->can('owner-report'))
+          <li class="{{ 'owner_report' == $sub_menu ? 'active' : '' }}">
+            <a href="{{url('/reports/owner')}}"><i class="fa fa-circle-thin"></i>@lang('pages_names.owner_report')</a>
+          </li>
+          @endif
+
+          @if(auth()->user()->can('finance-report'))
+          <li class="{{ 'finance_report' == $sub_menu ? 'active' : '' }}">
+            <a href="{{url('/reports/travel')}}"><i class="fa fa-circle-thin"></i>@lang('pages_names.finance_report')</a>
+          </li>
+          @endif
+
+          @if(auth()->user()->can('revenue-report'))
+          <li class="{{ 'revenue_report' == $sub_menu ? 'active' : '' }}">
+            <a href="{{url('/reports/revenue')}}"><i class="fa fa-circle-thin"></i>Revenue Report</a>
+          </li> 
+          @endif
+
+          @if(auth()->user()->can('commission-report'))
+          <li class="{{ 'commission_report' == $sub_menu ? 'active' : '' }}">
+            <a href="{{url('/reports/commission')}}"><i class="fa fa-circle-thin"></i>commission Report</a>
+          </li> 
+          @endif
+
+          @if(auth()->user()->can('star-ratings-report'))
+          <li class="{{ 'star_ratings_report' == $sub_menu ? 'active' : '' }}">
+            <a href="{{url('/reports/star-ratings')}}"><i class="fa fa-circle-thin"></i>Star Ratings Report</a>
+          </li> 
+          @endif
+
+          @if(auth()->user()->can('completed-rides-report'))
+          <li class="{{ 'completed_rides_report' == $sub_menu ? 'active' : '' }}">
+            <a href="{{url('/reports/completed-rides')}}"><i class="fa fa-circle-thin"></i>Completed Rides Report</a>
+          </li> 
+          @endif
+
+          @if(auth()->user()->can('company-tag-integration-report'))
+          <li class="{{ 'company_tag_integration_report' == $sub_menu ? 'active' : '' }}">
+            <a href="{{url('/reports/company-tag-integration')}}"><i class="fa fa-circle-thin"></i>Company Tag Integration Report</a>
+          </li> 
+          @endif
+
+          @if(auth()->user()->can('auto-pdf-report'))
+          <li class="{{ 'auto_pdf_report' == $sub_menu ? 'active' : '' }}">
+            <a href="{{url('/reports/pdf')}}"><i class="fa fa-circle-thin"></i>Auto PDF Download</a>
+          </li> 
+          @endif
+        </ul>
+      </li>
+      @endif
        @if(auth()->user()->can('view-settings'))
       <li class="treeview {{ 'settings' == $main_menu ? 'active menu-open' : '' }}">
         <a href="javascript: void(0);">
@@ -593,86 +670,6 @@ if(str_contains((string)request()->path(),'translations')){
           @endif
 
 
-        </ul>
-      </li>
-      @endif
-
-
-      @if(auth()->user()->can('reports'))
-      <li class="treeview {{ 'reports' == $main_menu ? 'active menu-open' : '' }}">
-        <a href="javascript: void(0);">
-          <i class="fa fa-file-pdf-o"></i>
-          <span> @lang('pages_names.reports') </span>
-          <span class="pull-right-container">
-            <i class="fa fa-angle-right pull-right"></i>
-          </span>
-        </a>
-
-        <ul class="treeview-menu">
-          @if(auth()->user()->can('user-report'))
-          <li class="{{ 'user_report' == $sub_menu ? 'active' : '' }}">
-            <a href="{{url('/reports/user')}}"><i class="fa fa-circle-thin"></i>@lang('pages_names.user_report')</a>
-          </li>
-          @endif
-
-          @if(auth()->user()->can('driver-report'))
-          <li class="{{ 'driver_report' == $sub_menu ? 'active' : '' }}">
-            <a href="{{url('/reports/driver')}}"><i class="fa fa-circle-thin"></i>@lang('pages_names.driver_report')</a>
-          </li>
-          @endif
-          @if(auth()->user()->can('driver-duties-report'))
-         <!--  <li class="{{ 'driver_duties_report' == $sub_menu ? 'active' : '' }}">
-            <a href="{{url('/reports/driver-duties')}}"><i class="fa fa-circle-thin"></i>@lang('pages_names.driver_duties_report')</a>
-          </li> -->
-          @endif
-
-          @if(auth()->user()->can('owner-report'))
-          <li class="{{ 'owner_report' == $sub_menu ? 'active' : '' }}">
-            <a href="{{url('/reports/owner')}}"><i class="fa fa-circle-thin"></i>@lang('pages_names.owner_report')</a>
-          </li>
-          @endif
-
-          @if(auth()->user()->can('finance-report'))
-          <li class="{{ 'finance_report' == $sub_menu ? 'active' : '' }}">
-            <a href="{{url('/reports/travel')}}"><i class="fa fa-circle-thin"></i>@lang('pages_names.finance_report')</a>
-          </li>
-          @endif
-
-          @if(auth()->user()->can('revenue-report'))
-          <li class="{{ 'revenue_report' == $sub_menu ? 'active' : '' }}">
-            <a href="{{url('/reports/revenue')}}"><i class="fa fa-circle-thin"></i>Revenue Report</a>
-          </li> 
-          @endif
-
-          @if(auth()->user()->can('commission-report'))
-          <li class="{{ 'commission_report' == $sub_menu ? 'active' : '' }}">
-            <a href="{{url('/reports/commission')}}"><i class="fa fa-circle-thin"></i>commission Report</a>
-          </li> 
-          @endif
-
-          @if(auth()->user()->can('star-ratings-report'))
-          <li class="{{ 'star_ratings_report' == $sub_menu ? 'active' : '' }}">
-            <a href="{{url('/reports/star-ratings')}}"><i class="fa fa-circle-thin"></i>Star Ratings Report</a>
-          </li> 
-          @endif
-
-          @if(auth()->user()->can('completed-rides-report'))
-          <li class="{{ 'completed_rides_report' == $sub_menu ? 'active' : '' }}">
-            <a href="{{url('/reports/completed-rides')}}"><i class="fa fa-circle-thin"></i>Completed Rides Report</a>
-          </li> 
-          @endif
-
-          @if(auth()->user()->can('company-tag-integration-report'))
-          <li class="{{ 'company_tag_integration_report' == $sub_menu ? 'active' : '' }}">
-            <a href="{{url('/reports/company-tag-integration')}}"><i class="fa fa-circle-thin"></i>Company Tag Integration Report</a>
-          </li> 
-          @endif
-
-          @if(auth()->user()->can('auto-pdf-report'))
-          <li class="{{ 'auto_pdf_report' == $sub_menu ? 'active' : '' }}">
-            <a href="{{url('/reports/pdf')}}"><i class="fa fa-circle-thin"></i>Auto PDF Download</a>
-          </li> 
-          @endif
         </ul>
       </li>
       @endif

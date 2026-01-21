@@ -11,6 +11,7 @@ use App\Transformers\Requests\TripRequestTransformer;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group Request-Histories
@@ -79,7 +80,7 @@ class RequestHistoryController extends BaseController
         }
         // echo $query->get();exit;
         $result  = filter($query, new TripRequestTransformer, new RequestFilter, 'history')->customIncludes($includes)->paginate();
-
+        Log::info("result list: " . json_encode($result));
         return $this->respondSuccess($result,'history_listed');
     }
 

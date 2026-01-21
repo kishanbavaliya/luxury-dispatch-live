@@ -65,7 +65,6 @@ class PayPalController extends Controller
             $payment_for = $request->payment_for;
             $request_id = $request->request_id ?? " ";
             $user_id = $request->user_id;
-
         $response = $provider->createOrder([
             "intent" => "CAPTURE",
             "application_context" => [
@@ -86,7 +85,6 @@ class PayPalController extends Controller
                 ]
             ]
         ]);
-
         if (isset($response['id']) && $response['id'] != null) {
 
             foreach ($response['links'] as $links) {
@@ -100,9 +98,16 @@ class PayPalController extends Controller
                 ->with('error', 'Something went wrong.');
 
         } else {
-            return redirect()
-                ->route('paypal.payment')
-                ->with('error', $response['message'] ?? 'Something went wrong.');
+            // return redirect()
+            //     ->route('paypal.payment')
+            //     ->with('error', $response['message'] ?? 'Something went wrong.');
+            return redirect()->route('paypal', [
+                'amount' => $amount,
+                'payment_for' => $payment_for,
+                'request_id' => $request_id,
+                'user_id' => $user_id,
+                'currency' => $currency
+            ]);
         }
 
     }

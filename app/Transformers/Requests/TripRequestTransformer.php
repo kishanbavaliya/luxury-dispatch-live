@@ -13,7 +13,8 @@ use App\Base\Constants\Masters\PaymentType;
 use App\Base\Constants\Setting\Settings;
 use App\Transformers\Requests\RequestStopsTransformer;
 use App\Transformers\Requests\RequestProofsTransformer;
-use Log;
+use Illuminate\Support\Facades\Log;
+use App\Base\Constants\Auth\Role;
 
 class TripRequestTransformer extends Transformer
 {
@@ -43,6 +44,16 @@ class TripRequestTransformer extends Transformer
      */
     public function transform(RequestModel $request)
     {
+        $user = auth()->user();
+        $request_eta_amount = $request->requestBill ? $request->requestBill->total_amount : $request->request_eta_amount;
+        if ($user->hasRole(Role::DRIVER) || $user->hasRole(Role::OWNER)) {
+            if(empty($request->comission_percentage) || $request->comission_percentage <= 0 || $request->comission_percentage == null){
+                $service_fee = get_settings('admin_commission');
+                if($service_fee && $service_fee > 0){
+                    $request_eta_amount = $request_eta_amount - ($request_eta_amount * ($service_fee / 100));
+                }
+            }
+        }
         $params =  [
             'id' => $request->id,
             'request_number' => $request->request_number,
@@ -99,7 +110,7 @@ class TripRequestTransformer extends Transformer
             'is_round_trip'=>$request->is_round_trip,
             'rental_package_name'=>$request->rentalPackage?$request->rentalPackage->name:'-',
             'show_drop_location'=>false,
-            'request_eta_amount'=> $request->requestBill ? $request->requestBill->total_amount : $request->request_eta_amount,
+            'request_eta_amount'=> $request_eta_amount,
             'show_request_eta_amount'=>true,
             'comission_percentage'=>$request->comission_percentage,
             'offerred_ride_fare'=>$request->offerred_ride_fare,
@@ -278,7 +289,7 @@ class TripRequestTransformer extends Transformer
         }elseif($request->payment_opt ==PaymentType::CASH){
 
             $params['payment_type_string'] = 'cash';
-        }elseif($request->payment_opt ==PaymentType::ONLINE){
+        }elseif($request->payment_opt == PaymentType::ONLINE){
 
             $params['payment_type_string'] = 'online';
         }else{

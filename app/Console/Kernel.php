@@ -49,22 +49,26 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
          $schedule->command('drivers:totrip')
-                 ->everyMinute();
-         $schedule->command('assign_drivers:for_regular_rides')->everyMinute();
+                 ->everyMinute()->withoutOverlapping();
+         $schedule->command('assign_drivers:for_regular_rides')->everyMinute()->withoutOverlapping()
+        ->onOneServer()
+        ->runInBackground();
          $schedule->command('assign_drivers:for_schedule_rides')
-                 ->everyMinute();
+                 ->everyMinute()->withoutOverlapping()
+        ->onOneServer()
+        ->runInBackground();
          $schedule->command('offline:drivers')
-                 ->everyFiveMinutes();
+                 ->everyFiveMinutes()->withoutOverlapping();
          $schedule->command('notify:document:expires')
-                 ->daily();
+                 ->daily()->withoutOverlapping();
          $schedule->command('clear:otp')
-                 ->everyFiveMinutes();
+                 ->everyFiveMinutes()->withoutOverlapping();
          $schedule->command('send_request:toallownerdriver')
-                 ->everyMinute();
+                 ->everyMinute()->withoutOverlapping();
         // $schedule->command('clear:database')
         //          ->daily();
          $schedule->command('cancel:request')
-                 ->everyMinute();                 
+                 ->everyMinute()->withoutOverlapping();                 
         //  $schedule->command('reminder:toownerdrivercustomer')
         //          ->everyMinute();                 
     }

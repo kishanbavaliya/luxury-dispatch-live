@@ -305,7 +305,7 @@ class DriverEndRequestController extends BaseController
             $chargable_amount = $calculated_bill['total_amount'];
             $user_wallet = $request_detail->userDetail->userWallet;
 
-            if ($chargable_amount<=$user_wallet->amount_balance) {
+            if ($chargable_amount<=$user_wallet->amount_balance && $request_detail->userDetail->userWallet) {
                 $user_wallet->amount_balance -= $chargable_amount;
                 $user_wallet->amount_spent += $chargable_amount;
                 $user_wallet->save();

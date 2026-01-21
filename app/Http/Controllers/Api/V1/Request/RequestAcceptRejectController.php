@@ -866,7 +866,9 @@ class RequestAcceptRejectController extends BaseController
 
             $request_detail->update($request_detail_data);
         }
-        
+        $title = trans('push_notifications.trip_cancelled_by_driver_title',[],$user->lang);
+        $body = trans('push_notifications.trip_cancelled_by_driver_body',[],$user->lang);
+        dispatch(new SendPushNotification($user,$title,$body));
         return $this->respondSuccess();
     }
 }
